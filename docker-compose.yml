@@ -1,19 +1,4 @@
-version: '3.7'
-
-volumes:
-    prometheus_data: {}
-    grafana_data: {}
-
 services:
-  hs110sim:
-    container_name: hs110sim
-    image: tilt.dev/hs110-sim
-    build:
-      context: .
-      dockerfile: Dockerfile.sim
-#    ports:
-#      - 9999:9999
-
   hs110:
     image: tilt.dev/hs110-exporter
     depends_on: [ hs110sim ]
@@ -22,36 +7,8 @@ services:
       - HS110IP=hs110sim
       - FREQUENCY=1
       - LISTENPORT=8110
-#      - LABEL=location=home
-#    ports:
-#      - 8110:8110
+     - LABEL=location=home
+   ports:
+     - 8110:8110
 
-
-  prometheus:
-    image: tilt.dev/prometheus
-    build: ./prometheus
-    volumes:
-      - prometheus_data:/prometheus
-    command:
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.time=1d'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    depends_on:
-      - hs110
-
-  grafana:
-    image: tilt.dev/grafana
-    build: ./grafana
-    user: "104"
-    depends_on:
-      - prometheus
-    ports:
-      - 3000:3000
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=developer
-      - GF_USERS_ALLOW_SIGN_UP=false
-    volumes:
-      - grafana_data:/var/lib/grafana
 

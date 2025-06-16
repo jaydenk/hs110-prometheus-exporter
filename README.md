@@ -1,4 +1,4 @@
-![Docker CI and image publish](https://github.com/sdelrio/hs110-prometheus-exporter/workflows/Docker%20CI%20and%20image%20publish/badge.svg)
+## Forked and stripped out all but the HS110 exporter. Rebuilding to be compatible with ARM64.
 
 # TP-Link HS110 prometheus exporter
 
