@@ -37,35 +37,6 @@ RUN pip install \
         -r /tmp/requirements.txt
 
 #######################################################
-# TESTS IMAGE
-#######################################################
-
-FROM build as test
-
-ARG USER_ID=1000
-ARG USER_NAME=app
-ARG GROUP_ID=1000
-ARG GROUP_NAME=app
-
-# Copy pip libs
-COPY --from=build  /usr/local/lib /usr/local/lib
-
-WORKDIR /workdir
-COPY requirements.txt \
-     requirements-dev.txt \
-     tox.ini \
-     .pylintrc \
-     mypy.ini \
-     hs110exporter.py \
-     test_hs110exporter.py \
-     ./
-RUN pip install \
-        --no-cache-dir \
-        -r requirements-dev.txt
-
-ENTRYPOINT ["tox", "-e", "coverage,py3"]
-
-#######################################################
 # RUN IMAGE
 #######################################################
 FROM base as run
@@ -88,4 +59,3 @@ COPY entrypoint.sh /entrypoint.sh
 USER $USER_NAME
 
 ENTRYPOINT ["/entrypoint.sh"]
-
