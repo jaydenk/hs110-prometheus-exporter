@@ -2,7 +2,7 @@
 # BASE IMAGE
 #######################################################
 ARG BASE_IMAGE=python
-ARG BASE_IMAGE_TAG=3.8-alpine3.13
+ARG BASE_IMAGE_TAG=3.12-alpine
 
 FROM $BASE_IMAGE:$BASE_IMAGE_TAG as base
 
